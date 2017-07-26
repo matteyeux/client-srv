@@ -11,7 +11,7 @@
 
 
 int read_args (int server, char *host, char *port, struct addrinfo **result);
-int exec_bin(int sock2server, const char *bin2exec);
+int exec_bin(int sock2server);
 void usage(int argc, char *argv[]);
 
 
@@ -35,7 +35,7 @@ int read_args (int server, char *host, char *port, struct addrinfo **results)
 	return 0;
 }
 
-int exec_bin(int sock2server, const char *bin2exec){
+int exec_bin(int sock2server){
 	
 	int tube[2];
 	char buf[1024];
@@ -56,7 +56,7 @@ int exec_bin(int sock2server, const char *bin2exec){
 				perror("dup");
 				exit(EXIT_FAILURE);
 			}
-			execl(bin2exec, "sysnet", "-n", NULL);
+			execl("/usr/local/bin/sysnet", "sysnet", "-n", NULL);
 			perror("execlp");
 			close(tube[1]);
 			break;
@@ -123,7 +123,7 @@ int main (int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	freeaddrinfo(results);
-	exec_bin(sock, "/usr/local/bin/sysnet");
+	exec_bin(sock);
 	close(sock);
 	return 0;
 }
