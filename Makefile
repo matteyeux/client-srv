@@ -8,8 +8,5 @@ client : client.c
 server : server.c
 	gcc server.c -o server
 
-#dup : dup.c
-#	gcc dup.c -o dup
-
 clean :
 	rm client server
