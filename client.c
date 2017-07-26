@@ -17,10 +17,7 @@ void usage(int argc, char *argv[]);
 
 int read_args (int server, char *host, char *port, struct addrinfo **results)
 {
-	int    err;	/*
-	char *host  = "127.0.0.1";
-	char *port = "4000";*/
-
+	int    err;	
 	struct addrinfo  hints;
 
 	memset(&hints, 0, sizeof(hints));
@@ -50,7 +47,7 @@ int exec_bin(int sock2server){
 		case -1:
 			printf("err case -1\n");
 			break;
-		case 0: //son closes 1
+		case 0: 
 			close(tube[0]);
 			if (dup2(tube[1], STDOUT_FILENO) < 0) {
 				perror("dup");
@@ -60,7 +57,7 @@ int exec_bin(int sock2server){
 			perror("execlp");
 			close(tube[1]);
 			break;
-		default: // father closes 0
+		default: 
 			close(tube[1]);
 			while(1){
 				n = read(tube[0], buf, sizeof(buf));
