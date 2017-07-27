@@ -6,8 +6,9 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-
 #include <sys/socket.h>
+
+#include <include/network.h>
 
 int  serveur_tcp ();
 int  leave_srv (void);
@@ -118,12 +119,25 @@ void usage(int argc, const char* argv[]){
 
 int main (int argc, const char* argv[])
 {
-	if (argc != 2)
+	const char* port;
+	if (argc > 2)
 	{
 		usage(argc, argv);
 		return 0;
 	}
-	serveur_tcp(argv[1]);
+
+	if (argc == 1)
+	{
+		port = "50683";
+	} else {
+		if (!strcmp(argv[1], "-i"))
+		{
+			port = "50683";
+			network_info();
+		} else {
+			usage(argc,argv);
+		}
+	}
+	serveur_tcp(port);
 	return 0;
 }
-
