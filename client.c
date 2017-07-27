@@ -10,12 +10,12 @@
 #define LG_BUFFER	1024
 
 
-int read_args (int server, char *host, char *port, struct addrinfo **result);
-int exec_bin(int sock2server);
+int init_client (int server, char *host, char *port, struct addrinfo **result);
+int exec_bin(int sock2server, const char* bin2exec);
 void usage(int argc, char *argv[]);
 
 
-int read_args (int server, char *host, char *port, struct addrinfo **results)
+int init_client (int server, char *host, char *port, struct addrinfo **results)
 {
 	int    err;	
 	struct addrinfo  hints;
@@ -32,7 +32,7 @@ int read_args (int server, char *host, char *port, struct addrinfo **results)
 	return 0;
 }
 
-int exec_bin(int sock2server){
+int exec_bin(int sock2server, const char* bin2exec){
 	
 	int tube[2];
 	char buf[1024];
@@ -53,8 +53,10 @@ int exec_bin(int sock2server){
 				perror("dup");
 				exit(EXIT_FAILURE);
 			}
-			execl("/usr/local/bin/sysnet", "sysnet", "-n", NULL);
-			perror("execlp");
+			system(bin2exec);
+			#ifdef DEBUG
+				perror("system");
+			#endif
 			close(tube[1]);
 			break;
 		default: 
@@ -82,7 +84,7 @@ int exec_bin(int sock2server){
 }
 
 void usage(int argc, char *argv[]){
-	printf("usage : %s [ip] <port>\n",argv[0] );
+	printf("usage : %s [ip] [port] <cmd>\n",argv[0]);
 }
 
 int main (int argc, char *argv[])
@@ -90,25 +92,36 @@ int main (int argc, char *argv[])
 	int    sock;
 	char   buffer [LG_BUFFER];
 	int    nb_lus;
-	char *ipaddr, *port;
+	char  *ipaddr, *port, *bin2run;
 	struct addrinfo *results;
 	
-	if (argc != 2 && argc != 3)
+	if (argc < 2 || argc > 4)
 	{
 		usage(argc, argv);
 		return 0;
 	}
-	if (argc == 2)
-	{
-		ipaddr = "127.0.0.1";
-		port = argv[1];
-	} else {
-		ipaddr = argv[1];
-		port = argv[2];
+	// laziness
+	switch(argc){
+		case 2:
+			ipaddr = "127.0.0.1";
+			port = "50683";
+			bin2run = argv[1];
+			break;
+		case 3:
+			ipaddr = argv[1];
+			port = "50683";
+			bin2run = argv[2];
+			break;
+		case 4:
+			ipaddr = argv[1];
+			port = argv[2];
+			bin2run = argv[3];
+			break;
+		default:
+			usage(argc, argv);
 	}
 
-
-	if (read_args(0,ipaddr, port, &results) < 0){
+	if (init_client(0,ipaddr, port, &results) < 0){
 		exit(EXIT_FAILURE);
 	}
 	if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
@@ -120,7 +133,7 @@ int main (int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 	freeaddrinfo(results);
-	exec_bin(sock);
+	exec_bin(sock, bin2run);
 	close(sock);
 	return 0;
 }
