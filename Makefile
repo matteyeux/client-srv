@@ -11,7 +11,7 @@ client : client.c
 	gcc client.c $(DBG) -o  $@
 
 server : server.c
-	gcc server.c sysnet/src/network.c -Isysnet $(DBG) -o  $@
+	gcc server.c $(DBG) -o  $@
 
 clean :
 	rm client server

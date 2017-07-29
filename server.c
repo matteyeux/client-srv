@@ -8,8 +8,6 @@
 #include <unistd.h>
 #include <sys/socket.h>
 
-#include <include/network.h>
-
 int  serveur_tcp ();
 int  leave_srv (void);
 void manage_co (int sock);
@@ -129,14 +127,9 @@ int main (int argc, const char* argv[])
 	if (argc == 1)
 	{
 		port = "50683";
-	} else {
-		if (!strcmp(argv[1], "-i"))
-		{
-			port = "50683";
-			network_info();
-		} else {
-			usage(argc,argv);
-		}
+	}
+	else {
+		usage(argc,argv);
 	}
 	serveur_tcp(port);
 	return 0;
