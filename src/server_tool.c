@@ -7,13 +7,14 @@
 #include <time.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <include/server_tool.h>
 
 int  serveur_tcp ();
 int  leave_srv (void);
 void manage_co (int sock);
 
 
-int serveur_tcp(const char* service_port)
+int tcp_server(const char* service_port)
 {
 	int err;
 	int sock_server;
@@ -109,28 +110,4 @@ void manage_co (int sock)
 		buffer[buf_len] = '\0';
 	}
 	close(sock);
-}
-
-void usage(int argc, const char* argv[]){
-	printf("usage : %s [port]\n", argv[0]);
-}
-
-int main (int argc, const char* argv[])
-{
-	const char* port;
-	if (argc > 2)
-	{
-		usage(argc, argv);
-		return 0;
-	}
-
-	if (argc == 1)
-	{
-		port = "50683";
-	}
-	else {
-		usage(argc,argv);
-	}
-	serveur_tcp(port);
-	return 0;
 }
