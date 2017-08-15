@@ -13,6 +13,7 @@ void usage(int argc, char *argv[]){
 	printf("-i, --ip [ip]\t\t set ip server\n");
 	printf("-p, --port [port]\t set port server\n");
 	printf("-c, --cmd [cmd]\t\t set command to run\n");
+	printf("-h, --help\t\t print help\n");
 }
 
 int main (int argc, char *argv[])
@@ -21,7 +22,7 @@ int main (int argc, char *argv[])
 	char  *ipaddr = "127.0.0.1", *port = "50683", *bin2run = "ls";
 	struct addrinfo *results;
 	
-	if (argc < 2 || argc > 6)
+	if (argc > 6)
 	{
 		usage(argc, argv);
 		return 0;
@@ -34,7 +35,7 @@ int main (int argc, char *argv[])
 			port = argv[i + 1];
 		} else if (!strcmp(argv[i], "-c") || !strcmp(argv[i], "--cmd")) {
 			bin2run = argv[i + 1];
-		} else {
+		} else if (!strcmp(argv[i], "-h") || !strcmp(argv[i], "--help")) {
 			usage(argc, argv);
 			return 0;
 		}
