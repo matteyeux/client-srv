@@ -8,46 +8,36 @@
 #include <sys/socket.h>
 #include <include/client_tool.h>
 
-/*void usage(int argc, char *argv[]);
-
-*/
-
 void usage(int argc, char *argv[]){
-	printf("usage : %s [ip] [port] <cmd>\n",argv[0]);
+	printf("usage : %s -i [ip] -p [port] -c <cmd>\n",argv[0]);
+	printf("-i, --ip [ip]\t\t set ip server\n");
+	printf("-p, --port [port]\t set port server\n");
+	printf("-c, --cmd [cmd]\t\t set command to run\n");
 }
 
 int main (int argc, char *argv[])
 {
 	int    sock;
-	char   buffer [LG_BUFFER];
-	int    nb_lus;
-	char  *ipaddr, *port, *bin2run;
+	char  *ipaddr = "127.0.0.1", *port = "50683", *bin2run = "ls";
 	struct addrinfo *results;
 	
-	if (argc < 2 || argc > 4)
+	if (argc < 2 || argc > 6)
 	{
 		usage(argc, argv);
 		return 0;
 	}
-	// laziness
-	switch(argc){
-		case 2:
-			ipaddr = "127.0.0.1";
-			port = "50683";
-			bin2run = argv[1];
-			break;
-		case 3:
-			ipaddr = argv[1];
-			port = "50683";
-			bin2run = argv[2];
-			break;
-		case 4:
-			ipaddr = argv[1];
-			port = argv[2];
-			bin2run = argv[3];
-			break;
-		default:
+
+	for(int i = 0; i < argc; i++) {
+		if(!strcmp(argv[i], "-i") || !strcmp(argv[i], "--ip")) {
+			ipaddr = argv[i + 1];
+		} else if(!strcmp(argv[i], "-p") || !strcmp(argv[i], "--port")) {
+			port = argv[i + 1];
+		} else if (!strcmp(argv[i], "-c") || !strcmp(argv[i], "--cmd")) {
+			bin2run = argv[i + 1];
+		} else {
 			usage(argc, argv);
+			return 0;
+		}
 	}
 
 	if (init_client(0,ipaddr, port, &results) < 0){
