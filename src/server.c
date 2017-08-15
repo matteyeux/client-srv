@@ -16,18 +16,14 @@ void usage(int argc, const char* argv[]){
 int main (int argc, const char* argv[])
 {
 	const char* port;
-	if (argc > 2)
-	{
-		usage(argc, argv);
-		return 0;
-	}
 
-	if (argc == 1)
-	{
+	if (argc == 1) {
 		port = "50683";
-	}
-	else {
+	} else if (argc == 2) {
+		port = argv[1];
+	} else {
 		usage(argc,argv);
+		return -1;
 	}
 	tcp_server(port);
 	return 0;
