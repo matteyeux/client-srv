@@ -4,11 +4,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
-
 #include <sys/socket.h>
-
-
-
 
 int init_client (int server, char *host, char *port, struct addrinfo **results)
 {
@@ -48,6 +44,7 @@ int exec_bin(int sock2server, const char* bin2exec){
 				perror("dup");
 				exit(EXIT_FAILURE);
 			}
+			
 			system(bin2exec);
 			#ifdef DEBUG
 				perror("system");
