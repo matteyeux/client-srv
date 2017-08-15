@@ -9,11 +9,6 @@
 #include <sys/socket.h>
 #include <include/server_tool.h>
 
-int  serveur_tcp ();
-int  leave_srv (void);
-void manage_co (int sock);
-
-
 int tcp_server(const char* service_port)
 {
 	int err;
@@ -85,13 +80,13 @@ int tcp_server(const char* service_port)
 	return 0;
 }
 
-int leave_srv (void)
+int leave_srv(void)
 {
 	return 0;
 }
 
 
-void manage_co (int sock)
+void manage_co(int sock)
 {
 	char buffer[256];
 	int  buf_len;
