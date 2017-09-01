@@ -19,6 +19,7 @@ void usage(int argc, char *argv[]){
 int main (int argc, char *argv[])
 {
 	int    sock;
+	int i;
 	char  *ipaddr = "127.0.0.1", *port = "50683", *bin2run = "ls";
 	struct addrinfo *results;
 	
@@ -28,7 +29,7 @@ int main (int argc, char *argv[])
 		return 0;
 	}
 
-	for(int i = 0; i < argc; i++) {
+	for(i = 0; i < argc; i++) {
 		if(!strcmp(argv[i], "-i") || !strcmp(argv[i], "--ip")) {
 			ipaddr = argv[i + 1];
 		} else if(!strcmp(argv[i], "-p") || !strcmp(argv[i], "--port")) {
