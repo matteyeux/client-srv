@@ -1,7 +1,7 @@
 CC = gcc 
 SRC = src
 DEBUG ?=
-
+arch = $(shell arch)
 ifeq ($(DEBUG), 1)
 	DBG = -DDEBUG
 endif
@@ -26,4 +26,13 @@ $(SRC)/%.o : $(SRC)/%.c
 	@$(CC) -c $(DBG) -I. $< -o $@
 
 clean :
-	rm client server src/*.o
+	rm -rf client server src/*.o \
+	deb *.deb
+
+deb : client server
+	@echo "Packing..."
+	mkdir -p deb/usr/local/bin/ deb/DEBIAN
+	cp client server deb/usr/local/bin
+	cp resources/control deb/DEBIAN
+	dpkg-deb --build deb client-srv_0.1_$(arch).deb
+	@echo "done"
