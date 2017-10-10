@@ -91,6 +91,7 @@ void manage_co(int sock)
 	char buffer[256];
 	int  buf_len;
 
+	FILE *fp = fopen("log" ,"a+"); //w+
 	while (1) {
 		buf_len = read(sock, buffer, 256);
 		
@@ -101,8 +102,11 @@ void manage_co(int sock)
 		if (buf_len == 0)
 			break;
 		printf("%s",buffer);
+		fprintf(fp, "%s\n", buffer);
+
 		memset(buffer, 0, 256);
 		buffer[buf_len] = '\0';
 	}
+	fclose(fp);
 	close(sock);
 }
