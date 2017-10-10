@@ -3,3 +3,4 @@ server
 src/*.o
 deb
 *.deb
+log
