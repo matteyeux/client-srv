@@ -1,0 +1,5 @@
+<server_param>
+	<ip>127.0.0.1</ip>
+	<port>50683</port>
+	<cmd>ls</cmd>
+</server_param>
