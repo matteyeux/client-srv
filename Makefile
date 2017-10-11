@@ -15,15 +15,15 @@ all : client server
 
 client :  src/client.o src/client_tool.o
 	@echo "LD      $@"
-	@$(CC) src/client.o src/client_tool.o $(DBG) -o  $@
+	@$(CC) src/client.o src/client_tool.o $(DBG) -lxml2 -o  $@
 
 server : src/server.o src/server_tool.o
 	@echo "LD      $@"
-	@$(CC) src/server.o src/server_tool.o $(DBG) -o  $@
+	@$(CC) src/server.o src/server_tool.o $(DBG) -lxml2 -o  $@
 
 $(SRC)/%.o : $(SRC)/%.c
 	@echo "CC	$<"
-	@$(CC) -c $(DBG) -I. $< -o $@
+	@$(CC) -c -g $(DBG) -I. -I/usr/include/libxml2 $< -o $@
 
 clean :
 	rm -rf client server src/*.o \
