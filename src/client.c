@@ -15,7 +15,7 @@ void usage(int argc, char *argv[]){
 	printf("-i, --ip [ip]\t\t set ip server\n");
 	printf("-p, --port [port]\t set port server\n");
 	printf("-c, --cmd [cmd]\t\t set command to run\n");
-	printf("-x, --xml [xmlfile]\tset parameters in xml file\n");
+	printf("-x, --xml [xmlfile]\t set parameters in xml file\n");
 	printf("-h, --help\t\t print help\n");
 }
 
@@ -25,7 +25,7 @@ int main (int argc, char *argv[])
 	int i, xml = 0;
 
 	char *xmlfile = NULL;
-	if (argc > 6)
+	if (argc > 6 || argc <= 2)
 	{
 		usage(argc, argv);
 		return 0;
